@@ -5,7 +5,7 @@
       
       
   Technologies Used:
-  Backend: Node.js, Express.js
-  Frontend: Javascript, React.js, Redux
-  Database: Mongo DB
+  Backend: Node.js, Express.js <br />
+  Frontend: Javascript, React.js, Redux <br />
+  Database: Mongo DB <br />
   
