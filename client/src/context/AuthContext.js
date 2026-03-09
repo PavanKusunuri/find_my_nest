@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import api from "../utils/api";
 
 const AuthContext = createContext();
@@ -10,16 +10,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-  useEffect(() => {
-    if (token) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      fetchMe();
-    } else {
-      setLoading(false);
-    }
-  }, [token]);
+  const logout = useCallback(async () => {
+    try { await api.get("/auth/logout"); } catch {}
+    localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
+    setToken(null);
+    setUser(null);
+  }, []);
 
-  const fetchMe = async () => {
+  const fetchMe = useCallback(async () => {
     try {
       const res = await api.get("/auth/me");
       setUser(res.data.data);
@@ -28,7 +27,16 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [logout]);
+
+  useEffect(() => {
+    if (token) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      fetchMe();
+    } else {
+      setLoading(false);
+    }
+  }, [token, fetchMe]);
 
   const login = async (email, password) => {
     const res = await api.post("/auth/login", { email, password });
@@ -50,13 +58,7 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const logout = async () => {
-    try { await api.get("/auth/logout"); } catch {}
-    localStorage.removeItem("token");
-    delete api.defaults.headers.common["Authorization"];
-    setToken(null);
-    setUser(null);
-  };
+
 
   const updateDetails = async (formData) => {
     const res = await api.put("/auth/updatedetails", formData);

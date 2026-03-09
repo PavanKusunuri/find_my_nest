@@ -14,7 +14,7 @@ import {
 const BookingPage = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { user } = useAuth();
+  useAuth(); // ensure auth context is available (PrivateRoute handles redirect)
 
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
