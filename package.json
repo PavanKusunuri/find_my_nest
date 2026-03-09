@@ -1,8 +1,8 @@
 {
   "name": "find_my_nest",
   "version": "1.0.0",
-  "description": "A Application to find a shelter in a city",
-  "main": "index.js",
+  "description": "A platform to find rooms and hostels for daily/monthly stay",
+  "main": "server.js",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
@@ -13,9 +13,19 @@
   "author": "PavanKusunuri",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "path": "^0.12.7"
+    "express-mongo-sanitize": "^2.0.2",
+    "express-rate-limit": "^5.2.6",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.3",
+    "path": "^0.12.7",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
