@@ -2,19 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useAuth } from "../context/AuthContext";
 import api from "../utils/api";
 import { toast } from "react-toastify";
-import { differenceInDays, differenceInCalendarMonths, addDays, addMonths } from "date-fns";
 import {
-  FaMapMarkerAlt, FaStar, FaUsers, FaCalendarAlt,
-  FaCheckCircle, FaArrowLeft,
+  differenceInDays,
+  differenceInCalendarMonths,
+  addDays,
+  addMonths,
+} from "date-fns";
+import {
+  FaMapMarkerAlt,
+  FaStar,
+  FaUsers,
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaArrowLeft,
 } from "react-icons/fa";
 
 const BookingPage = () => {
   const { id } = useParams();
   const history = useHistory();
-  useAuth(); // ensure auth context is available (PrivateRoute handles redirect)
 
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,10 +55,15 @@ const BookingPage = () => {
     if (!checkIn || !checkOut) return null;
     if (stayType === "daily") {
       const days = differenceInDays(checkOut, checkIn);
-      return days > 0 ? { amount: days * listing.pricePerDay, unit: `${days} day(s)` } : null;
+      return days > 0
+        ? { amount: days * listing.pricePerDay, unit: `${days} day(s)` }
+        : null;
     } else {
       const months = differenceInCalendarMonths(checkOut, checkIn) || 1;
-      return { amount: months * listing.pricePerMonth, unit: `${months} month(s)` };
+      return {
+        amount: months * listing.pricePerMonth,
+        unit: `${months} month(s)`,
+      };
     }
   };
 
@@ -106,7 +118,10 @@ const BookingPage = () => {
   return (
     <div className="booking-page">
       <div className="container">
-        <button className="back-btn" onClick={() => (step === 2 ? setStep(1) : history.goBack())}>
+        <button
+          className="back-btn"
+          onClick={() => (step === 2 ? setStep(1) : history.goBack())}
+        >
           <FaArrowLeft /> Back
         </button>
 
@@ -146,7 +161,9 @@ const BookingPage = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label><FaCalendarAlt /> Check-in Date</label>
+                    <label>
+                      <FaCalendarAlt /> Check-in Date
+                    </label>
                     <DatePicker
                       selected={checkIn}
                       onChange={handleCheckInChange}
@@ -156,13 +173,17 @@ const BookingPage = () => {
                       minDate={new Date()}
                       placeholderText="Select check-in"
                       className="datepicker-input"
-                      dateFormat={stayType === "monthly" ? "MMMM yyyy" : "dd/MM/yyyy"}
+                      dateFormat={
+                        stayType === "monthly" ? "MMMM yyyy" : "dd/MM/yyyy"
+                      }
                       showMonthYearPicker={stayType === "monthly"}
                     />
                   </div>
 
                   <div className="form-group">
-                    <label><FaCalendarAlt /> Check-out Date</label>
+                    <label>
+                      <FaCalendarAlt /> Check-out Date
+                    </label>
                     <DatePicker
                       selected={checkOut}
                       onChange={setCheckOut}
@@ -172,27 +193,39 @@ const BookingPage = () => {
                       minDate={checkIn ? addDays(checkIn, 1) : new Date()}
                       placeholderText="Select check-out"
                       className="datepicker-input"
-                      dateFormat={stayType === "monthly" ? "MMMM yyyy" : "dd/MM/yyyy"}
+                      dateFormat={
+                        stayType === "monthly" ? "MMMM yyyy" : "dd/MM/yyyy"
+                      }
                       showMonthYearPicker={stayType === "monthly"}
                     />
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label><FaUsers /> Number of Guests</label>
+                  <label>
+                    <FaUsers /> Number of Guests
+                  </label>
                   <div className="guest-counter">
                     <button
                       type="button"
                       className="counter-btn"
                       onClick={() => setGuests((g) => Math.max(1, g - 1))}
-                    >−</button>
+                    >
+                      −
+                    </button>
                     <span className="guest-count">{guests}</span>
                     <button
                       type="button"
                       className="counter-btn"
-                      onClick={() => setGuests((g) => Math.min(listing.maxOccupancy, g + 1))}
-                    >+</button>
-                    <span className="guest-hint">Max {listing.maxOccupancy}</span>
+                      onClick={() =>
+                        setGuests((g) => Math.min(listing.maxOccupancy, g + 1))
+                      }
+                    >
+                      +
+                    </button>
+                    <span className="guest-hint">
+                      Max {listing.maxOccupancy}
+                    </span>
                   </div>
                 </div>
 
@@ -209,7 +242,9 @@ const BookingPage = () => {
                 {priceInfo && (
                   <div className="price-preview">
                     <span>Estimated Total</span>
-                    <strong>₹{priceInfo.amount} <small>({priceInfo.unit})</small></strong>
+                    <strong>
+                      ₹{priceInfo.amount} <small>({priceInfo.unit})</small>
+                    </strong>
                   </div>
                 )}
 
@@ -230,7 +265,9 @@ const BookingPage = () => {
                   </div>
                   <div className="summary-row">
                     <span>Stay Type</span>
-                    <strong>{stayType.charAt(0).toUpperCase() + stayType.slice(1)}</strong>
+                    <strong>
+                      {stayType.charAt(0).toUpperCase() + stayType.slice(1)}
+                    </strong>
                   </div>
                   <div className="summary-row">
                     <span>Check-in</span>
@@ -253,15 +290,18 @@ const BookingPage = () => {
                   <div className="summary-divider" />
                   <div className="summary-row summary-total">
                     <span>Total Amount</span>
-                    <strong className="total-amount">₹{priceInfo?.amount}</strong>
+                    <strong className="total-amount">
+                      ₹{priceInfo?.amount}
+                    </strong>
                   </div>
                 </div>
 
                 <div className="booking-terms">
                   <FaCheckCircle className="terms-icon" />
                   <p>
-                    By confirming, you agree that this sends a <strong>booking request</strong> to
-                    the owner. Your stay is confirmed once the owner approves.
+                    By confirming, you agree that this sends a{" "}
+                    <strong>booking request</strong> to the owner. Your stay is
+                    confirmed once the owner approves.
                   </p>
                 </div>
 
@@ -269,7 +309,11 @@ const BookingPage = () => {
                   <button className="btn-outline" onClick={() => setStep(1)}>
                     ← Edit
                   </button>
-                  <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
+                  <button
+                    className="btn-primary"
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                  >
                     {submitting ? "Sending Request..." : "Confirm Booking"}
                   </button>
                 </div>
@@ -298,7 +342,9 @@ const BookingPage = () => {
               {listing.averageRating > 0 && (
                 <div className="listing-rating-sm">
                   <FaStar className="star-icon" />
-                  <span>{listing.averageRating} ({listing.reviewCount} reviews)</span>
+                  <span>
+                    {listing.averageRating} ({listing.reviewCount} reviews)
+                  </span>
                 </div>
               )}
               <div className="listing-price-info">
