@@ -13,6 +13,9 @@ import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -30,9 +33,12 @@ function App() {
           <PrivateRoute exact path="/owner/listings/new" component={CreateListing} roles={["owner", "admin"]} />
           <PrivateRoute exact path="/owner/listings/:id/edit" component={EditListing} roles={["owner", "admin"]} />
           <PrivateRoute exact path="/listings/:id/book" component={BookingPage} roles={["tenant"]} />
+          <Route exact path="/privacy" component={PrivacyPolicy} />
+          <Route exact path="/terms" component={TermsAndConditions} />
           <Route component={NotFound} />
         </Switch>
       </div>
+      <Footer />
     </Router>
   );
 }
